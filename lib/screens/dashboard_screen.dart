@@ -51,6 +51,10 @@ class DashboardScreen extends StatelessWidget {
               style: TextStyle(fontSize: 23, fontWeight: FontWeight.w900, color: AppColors.ink),
             ),
             const Spacer(),
+            IconButton(
+              onPressed: () {},
+              icon: const Icon(Icons.notifications_none_rounded),
+            ),
             CircleAvatar(
               backgroundColor: AppColors.yellow,
               child: const Text(
