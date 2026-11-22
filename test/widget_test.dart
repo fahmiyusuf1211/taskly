@@ -1,8 +1,10 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:taskly/main.dart';
 import 'package:taskly/models/mata_kuliah_model.dart';
 import 'package:taskly/models/pemahaman.dart';
 import 'package:taskly/models/task_model.dart';
+import 'package:taskly/screens/detail_task_screen.dart';
 
 void main() {
   group('Formula Prioritas & Model Tests', () {
@@ -30,7 +32,7 @@ void main() {
     });
   });
 
-  group('Widget Smoke Test', () {
+  group('Widget Tests', () {
     testWidgets('Smoke test render TasklyApp dan navigasi utama', (WidgetTester tester) async {
       await tester.pumpWidget(const TasklyApp());
       await tester.pumpAndSettle();
@@ -40,6 +42,34 @@ void main() {
       expect(find.text('Home'), findsOneWidget);
       expect(find.text('Tasks'), findsOneWidget);
       expect(find.text('Matkul'), findsOneWidget);
+    });
+
+    testWidgets('DetailTaskScreen render countdown dan breakdown skor', (WidgetTester tester) async {
+      final mk = MataKuliahModel(id: 'mk-1', nama: 'Basis Data', sks: 3);
+      final task = TaskModel(
+        id: 't-test',
+        title: 'Latihan SQL Join',
+        mataKuliah: mk,
+        deadline: DateTime.now().add(const Duration(days: 2)),
+        pemahaman: 2,
+        description: 'Mengerjakan query join multi-tabel.',
+      );
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: DetailTaskScreen(
+            task: task,
+            mataKuliahList: [mk],
+            onUpdateTask: (_) {},
+            onDeleteTask: (_) {},
+          ),
+        ),
+      );
+
+      expect(find.text('Detail Tugas'), findsOneWidget);
+      expect(find.text('Latihan SQL Join'), findsOneWidget);
+      expect(find.text('BREAKDOWN FORMULA PRIORITAS'), findsOneWidget);
+      expect(find.text('Mengerjakan query join multi-tabel.'), findsOneWidget);
     });
   });
 }
