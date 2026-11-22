@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import '../core/app_colors.dart';
+import '../core/app_routes.dart';
 import '../models/mata_kuliah_model.dart';
 import '../models/task_model.dart';
 import 'dashboard_screen.dart';
-import 'mata_kuliah_screen.dart';
 import 'profile_screen.dart';
 import 'schedule_screen.dart';
 import 'statistics_screen.dart';
@@ -108,16 +109,14 @@ class _MainShellState extends State<MainShell> {
   }
 
   void _openMataKuliah() {
-    Navigator.push<void>(
-      context,
-      MaterialPageRoute(
-        builder: (_) => MataKuliahScreen(
-          mataKuliahList: _mataKuliahList,
-          tasks: _tasks,
-          onAddMataKuliah: _addMataKuliah,
-          onUpdateMataKuliah: _updateMataKuliah,
-          onDeleteMataKuliah: _deleteMataKuliah,
-        ),
+    Get.toNamed<void>(
+      AppRoutes.mataKuliah,
+      arguments: MataKuliahArgs(
+        mataKuliahList: _mataKuliahList,
+        tasks: _tasks,
+        onAddMataKuliah: _addMataKuliah,
+        onUpdateMataKuliah: _updateMataKuliah,
+        onDeleteMataKuliah: _deleteMataKuliah,
       ),
     );
   }

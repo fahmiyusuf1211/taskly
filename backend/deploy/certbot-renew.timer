@@ -1,0 +1,12 @@
+[Unit]
+Description=Pemeriksaan renewal sertifikat Taskly dua kali sehari
+
+[Timer]
+# Dua kali sehari; sertifikat IP hanya berlaku 6 hari, jadi jangan lebih jarang.
+# RandomizeDelay mencegah semua pengecekan menumpuk di jam yang sama.
+OnCalendar=*-*-* 03,15:17:00
+RandomizedDelaySec=3600
+Persistent=true
+
+[Install]
+WantedBy=timers.target
