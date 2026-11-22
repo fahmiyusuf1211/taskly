@@ -95,6 +95,11 @@ Sudah tersedia di repo ini (bagian "Fondasi & Data Layer"):
 | `lib/models/mata_kuliah_model.dart` | + `fromJson` / `toJson` |
 | `lib/models/task_model.dart` | + `fromJson` / `toJson` / `toRequestJson` |
 
+> **Menyambungkan ke halaman:** lihat [`backend/README-MIGRASI.md`](backend/README-MIGRASI.md) —
+> panduan lengkap mengganti data contoh di `main_shell.dart` dengan data API,
+> termasuk 7 handler yang harus diubah, tiga keadaan UI (memuat/gagal/kosong),
+> dan jebakan yang sering kena.
+
 Yang **belum** dan jadi tugas berikutnya:
 
 1. Ganti data contoh di `main_shell.dart` dengan hasil fetch (`TugasController`).
