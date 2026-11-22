@@ -32,7 +32,7 @@ class _TasksScreenState extends State<TasksScreen> {
   String _searchQuery = '';
   String _selectedFilter = 'Semua'; // 'Semua', 'Belum', 'Proses', 'Selesai'
 
-  Future<void> _openAdd(BuildContext context) async {
+  Future<void> _openAdd() async {
     final result = await Navigator.push<TaskFormResult>(
       context,
       MaterialPageRoute(
@@ -55,7 +55,7 @@ class _TasksScreenState extends State<TasksScreen> {
     }
   }
 
-  void _openDetail(BuildContext context, TaskModel task) {
+  void _openDetail(TaskModel task) {
     Navigator.push<void>(
       context,
       MaterialPageRoute(
@@ -94,7 +94,7 @@ class _TasksScreenState extends State<TasksScreen> {
     return Scaffold(
       backgroundColor: AppColors.background,
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => _openAdd(context),
+        onPressed: _openAdd,
         backgroundColor: AppColors.primary,
         foregroundColor: Colors.white,
         icon: const Icon(Icons.add),
@@ -193,7 +193,7 @@ class _TasksScreenState extends State<TasksScreen> {
               (task) => TaskTile(
                 task: task,
                 onChanged: () => widget.onTaskChanged(task),
-                onTap: () => _openDetail(context, task), // Buka Wireframe P3 (DetailTaskScreen)
+                onTap: () => _openDetail(task), // Buka Wireframe P3 (DetailTaskScreen)
               ),
             ),
         ],
