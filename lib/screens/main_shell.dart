@@ -5,6 +5,7 @@ import '../models/task_model.dart';
 import 'dashboard_screen.dart';
 import 'mata_kuliah_screen.dart';
 import 'profile_screen.dart';
+import 'schedule_screen.dart';
 import 'statistics_screen.dart';
 import 'tasks_screen.dart';
 
@@ -64,7 +65,6 @@ class _MainShellState extends State<MainShell> {
       final index = _mataKuliahList.indexWhere((mk) => mk.id == updated.id);
       if (index != -1) {
         _mataKuliahList[index] = updated;
-        // Update referensi di dalam tasks
         for (var i = 0; i < _tasks.length; i++) {
           if (_tasks[i].mataKuliah.id == updated.id) {
             _tasks[i] = _tasks[i].copyWith(mataKuliah: updated);
@@ -77,7 +77,6 @@ class _MainShellState extends State<MainShell> {
   void _deleteMataKuliah(String id) {
     setState(() {
       _mataKuliahList.removeWhere((mk) => mk.id == id);
-      // Cascade delete: hapus tugas yang terkait
       _tasks.removeWhere((t) => t.mataKuliah.id == id);
     });
   }
@@ -108,6 +107,21 @@ class _MainShellState extends State<MainShell> {
     });
   }
 
+  void _openMataKuliah() {
+    Navigator.push<void>(
+      context,
+      MaterialPageRoute(
+        builder: (_) => MataKuliahScreen(
+          mataKuliahList: _mataKuliahList,
+          tasks: _tasks,
+          onAddMataKuliah: _addMataKuliah,
+          onUpdateMataKuliah: _updateMataKuliah,
+          onDeleteMataKuliah: _deleteMataKuliah,
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final pages = [
@@ -124,12 +138,8 @@ class _MainShellState extends State<MainShell> {
         onDelete: _deleteTask,
         onTaskChanged: _toggleTaskStatus,
       ),
-      MataKuliahScreen(
-        mataKuliahList: _mataKuliahList,
-        tasks: _tasks,
-        onAddMataKuliah: _addMataKuliah,
-        onUpdateMataKuliah: _updateMataKuliah,
-        onDeleteMataKuliah: _deleteMataKuliah,
+      ScheduleScreen(
+        onManageMataKuliah: _openMataKuliah,
       ),
       StatisticsScreen(tasks: _tasks),
       const ProfileScreen(),
@@ -160,9 +170,9 @@ class _MainShellState extends State<MainShell> {
               label: 'Tasks',
             ),
             NavigationDestination(
-              icon: Icon(Icons.menu_book_outlined),
-              selectedIcon: Icon(Icons.menu_book),
-              label: 'Matkul',
+              icon: Icon(Icons.calendar_month_outlined),
+              selectedIcon: Icon(Icons.calendar_month),
+              label: 'Schedule',
             ),
             NavigationDestination(
               icon: Icon(Icons.bar_chart_outlined),

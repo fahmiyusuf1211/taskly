@@ -37,11 +37,13 @@ void main() {
       await tester.pumpWidget(const TasklyApp());
       await tester.pumpAndSettle();
 
-      // Cek tulisan Taskly pada Dashboard
+      // Cek tulisan Taskly pada Dashboard dan 5 bottom nav items asli
       expect(find.text('Taskly'), findsOneWidget);
       expect(find.text('Home'), findsOneWidget);
       expect(find.text('Tasks'), findsOneWidget);
-      expect(find.text('Matkul'), findsOneWidget);
+      expect(find.text('Schedule'), findsOneWidget);
+      expect(find.text('Stats'), findsOneWidget);
+      expect(find.text('Profile'), findsOneWidget);
     });
 
     testWidgets('DetailTaskScreen render countdown dan breakdown skor', (WidgetTester tester) async {
