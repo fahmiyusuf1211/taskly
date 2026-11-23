@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+import 'core/app_routes.dart';
 import 'screens/main_shell.dart';
 
 void main() {
@@ -11,7 +14,11 @@ class TasklyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    // GetMaterialApp dipakai supaya seluruh navigasi bisa lewat GetX
+    // (rute terdaftar di lib/core/app_routes.dart). Tema dan konfigurasi
+    // lain tetap sama persis dengan MaterialApp sebelumnya, jadi tampilan
+    // tidak berubah sedikit pun.
+    return GetMaterialApp(
       title: 'Taskly',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
@@ -24,7 +31,15 @@ class TasklyApp extends StatelessWidget {
         ),
         fontFamily: 'Roboto',
       ),
-      home: const MainShell(),
+      // Halaman pertama tetap MainShell, sama seperti `home:` sebelumnya.
+      initialRoute: AppRoutes.home,
+      getPages: AppRoutes.routes,
+      // Fallback: kalau ada rute tak dikenal, tampilkan MainShell
+      // (bukan layar error), supaya deep-link yang salah tidak mematikan app.
+      unknownRoute: GetPage<dynamic>(
+        name: '/not-found',
+        page: () => const MainShell(),
+      ),
     );
   }
 }

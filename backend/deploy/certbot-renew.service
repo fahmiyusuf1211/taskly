@@ -1,0 +1,13 @@
+[Unit]
+Description=Perbarui sertifikat Let's Encrypt untuk Taskly
+Documentation=https://certbot.eff.org
+After=network-online.target nginx.service
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+# --quiet supaya tidak menulis log saat tidak ada yang perlu diperbarui.
+ExecStart=/opt/certbot/bin/certbot renew --quiet
+# nginx dimuat ulang hanya kalau ada sertifikat yang benar-benar diperbarui,
+# supaya trafik yang sedang berjalan tidak terganggu tiap kali timer jalan.
+ExecStartPost=/bin/sh -c '/usr/bin/find /etc/letsencrypt/live -name fullchain.pem -newermt "-5 minutes" | grep -q . && /usr/bin/systemctl reload nginx || true'
