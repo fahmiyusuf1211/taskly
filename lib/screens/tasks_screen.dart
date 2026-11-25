@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import '../core/app_colors.dart';
+import '../core/app_routes.dart';
 import '../models/mata_kuliah_model.dart';
 import '../models/task_model.dart';
 import '../widgets/task_tile.dart';
 import 'add_task_screen.dart';
-import 'detail_task_screen.dart';
 
 class TasksScreen extends StatefulWidget {
   const TasksScreen({
@@ -33,13 +34,9 @@ class _TasksScreenState extends State<TasksScreen> {
   String _selectedFilter = 'Semua'; // 'Semua', 'Belum', 'Proses', 'Selesai'
 
   Future<void> _openAdd() async {
-    final result = await Navigator.push<TaskFormResult>(
-      context,
-      MaterialPageRoute(
-        builder: (_) => AddTaskScreen(
-          mataKuliahList: widget.mataKuliahList,
-        ),
-      ),
+    final result = await Get.toNamed<TaskFormResult>(
+      AppRoutes.tambahTugas,
+      arguments: TambahTugasArgs(mataKuliahList: widget.mataKuliahList),
     );
 
     if (!mounted || result == null) return;
@@ -56,15 +53,13 @@ class _TasksScreenState extends State<TasksScreen> {
   }
 
   void _openDetail(TaskModel task) {
-    Navigator.push<void>(
-      context,
-      MaterialPageRoute(
-        builder: (_) => DetailTaskScreen(
-          task: task,
-          mataKuliahList: widget.mataKuliahList,
-          onUpdateTask: widget.onUpdate,
-          onDeleteTask: widget.onDelete,
-        ),
+    Get.toNamed<void>(
+      AppRoutes.detailTugas,
+      arguments: DetailTugasArgs(
+        task: task,
+        mataKuliahList: widget.mataKuliahList,
+        onUpdateTask: widget.onUpdate,
+        onDeleteTask: widget.onDelete,
       ),
     );
   }

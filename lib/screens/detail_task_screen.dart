@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import '../core/app_colors.dart';
+import '../core/app_routes.dart';
 import '../models/mata_kuliah_model.dart';
 import '../models/pemahaman.dart';
 import '../models/task_model.dart';
@@ -55,13 +57,11 @@ class _DetailTaskScreenState extends State<DetailTaskScreen> {
   }
 
   Future<void> _openEdit() async {
-    final result = await Navigator.push<TaskFormResult>(
-      context,
-      MaterialPageRoute(
-        builder: (_) => AddTaskScreen(
-          mataKuliahList: widget.mataKuliahList,
-          initialTask: _task,
-        ),
+    final result = await Get.toNamed<TaskFormResult>(
+      AppRoutes.tambahTugas,
+      arguments: TambahTugasArgs(
+        mataKuliahList: widget.mataKuliahList,
+        initialTask: _task,
       ),
     );
 
@@ -69,7 +69,7 @@ class _DetailTaskScreenState extends State<DetailTaskScreen> {
 
     if (result.isDeleted) {
       widget.onDeleteTask(_task.id);
-      Navigator.pop(context);
+      Get.back();
     } else {
       setState(() => _task = result.task);
       widget.onUpdateTask(result.task);

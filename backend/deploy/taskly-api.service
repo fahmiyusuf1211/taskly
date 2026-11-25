@@ -1,0 +1,44 @@
+[Unit]
+Description=Taskly REST API (Node.js)
+Documentation=https://github.com/fahmiyusuf1211/taskly
+After=network-online.target postgresql.service
+Wants=network-online.target
+Requires=postgresql.service
+
+[Service]
+Type=simple
+User=taskly
+Group=taskly
+WorkingDirectory=/opt/taskly-api
+EnvironmentFile=/opt/taskly-api/.env
+ExecStart=/usr/bin/node src/index.js
+Restart=always
+RestartSec=3
+
+# --- Pengamanan -----------------------------------------------------------
+# API hanya butuh tulis di direktori sendiri dan baca /etc; sisanya dikunci.
+NoNewPrivileges=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/opt/taskly-api
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+RestrictNamespaces=true
+LockPersonality=true
+
+# Batas memori: VM 442 MB, Postgres + nginx sudah ambil bagian.
+# Kalau API bocor, systemd yang membunuhnya, bukan OOM killer yang
+# berpotensi ikut mematikan Postgres.
+MemoryMax=192M
+
+# --- Log ------------------------------------------------------------------
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=taskly-api
+
+[Install]
+WantedBy=multi-user.target
